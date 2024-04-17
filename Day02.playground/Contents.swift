@@ -65,9 +65,33 @@ var greeting = "Hello, playground"
 //let count = str?.count
 //let lastIndex = count - 1
 
+//var str: String? = "abc"
+//let count = str?.count
+//if count != nil {
+//    let lastIndex = count! - 1
+//    print(lastIndex)
+//}
+
+
+// Optional - 实现探究
+/// Optional其实是标准库里的一个enum类型
+/// 用标准库实现语言特性的典型
+
+///  Optional.none就是nil
+///  Optional.some则包装了实际的值
+
+//var str: Optional<String> = "abc"   //实际上和？是一样的
+//if let actualStr = str {
+//    let count = actualStr.count
+//    print(count)
+//}
+
+
+/// 范型属性 unsafelyUnwrapped
+/// 理论上我们可以直接调用 unsafelyUnwrapped 获取可选项的值
+
 var str: String? = "abc"
-let count = str?.count
-if count != nil {
-    let lastIndex = count! - 1
-    print(lastIndex)
+if str != nil {
+    let count = str.unsafelyUnwrapped.count
+    print(count)
 }
