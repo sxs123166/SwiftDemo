@@ -198,3 +198,73 @@ print(num ^ 1)
 print(num << 1)
 print(num >> 1)
 
+// 位运算的应用举例
+
+/// 不借助临时变量，交换两个变量的值
+var numA = 10
+var numB = 8
+numA = numA ^ numB
+numB = numA ^ numB
+numA = numA ^ numB
+print(numA)
+print(numB)
+
+
+func countOfOnes2(num: UInt) -> UInt {
+    var count: UInt = 0
+    var temp = num
+    while temp != 0 {
+        count += 1
+        temp = temp & (temp - 1)
+    }
+    return count
+}
+
+print(countOfOnes2(num: 0x100010))
+
+// 判断是否是2的整数次幂
+func isPowerOfTwo(num: Int) -> Bool {
+    return (num & (num - 1)) == 0
+}
+
+print(isPowerOfTwo(num: 511))
+
+// 缺失的数字
+func findLostNum(nums: [UInt]) -> UInt {
+    var lostNum: UInt = 0
+    for num in nums {
+        lostNum = lostNum ^ num
+        print(lostNum)
+    }
+    return lostNum
+}
+
+print(findLostNum(nums: [1,2,3,4,3,2,1]))
+
+
+// 缺失的数字2
+func findTwoLostNums(nums: [UInt]) -> (UInt, UInt) {
+    var lostNum1: UInt = 0
+    var lostNum2: UInt = 0
+    var temp: UInt = 0
+    // 计算两个数的异或结果
+    for num in nums {
+        temp = temp ^ num
+    }
+    // 找到第一个为1的位
+    var flag: UInt = 1
+    while ((flag & flag) == 0) {
+        flag = flag << 1
+    }
+    // 找到两个丢失的数字
+    for num in nums {
+        if(num & flag) == 0{
+            lostNum1 = lostNum1 ^ num
+        } else {
+            lostNum2 = lostNum2 ^ num
+        }
+    }
+    return (lostNum1, lostNum2)
+}
+
+print(findTwoLostNums(nums: [1,2,3,4,5,3,2,1]))
