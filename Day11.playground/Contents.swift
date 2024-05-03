@@ -172,12 +172,16 @@ numbers2.insert(contentsOf: -2...0, at: 0)
 /// removeFirst(:)移除数组前面多个元素
 /// removeLast(:)移除数组后面多个元素
 
-//var chars: [Character] = ["a", "b", "c", "d"]
-//chars.removeFirst(2)
-//print(chars)
-//
-//chars.removeLast(2)
-//print(chars)
+var chars: [Character] = ["a", "b", "c", "d"]
+chars.removeFirst(2)
+print(chars)
+
+chars.removeLast(2)
+print(chars)
+
+let num = chars.popLast()
+print(num)
+print(chars)
 
 /// removeSubrange(_:)移除数组中给定范围的元素
 /// removeAll()移除数组所有的元素
@@ -191,7 +195,160 @@ numbers2.insert(contentsOf: -2...0, at: 0)
 //print(chars)
 //print(chars.capacity)
 
-var chars: [Character] = ["a", "b", "c", "d"]
-chars.removeAll(keepingCapacity: true)
-print(chars)
-print(chars.capacity)
+//var chars: [Character] = ["a", "b", "c", "d"]
+//chars.removeAll(keepingCapacity: true)
+//print(chars)
+//print(chars.capacity)
+
+
+// ArraySlice
+/// ArraySlice是数组或者其他ArraySlice的一段连续切片，和原数组共享内存
+/// 当要改变ArraySlice的时候，ArraySlice会copy出来，形成单独内存
+/// ArraySlice拥有和Array基本完全类似的方法
+
+// 通过Drop得到ArraySlice
+/// dropFirst(:)“移除”原数组前面指定个数的元素得到一个ArraySlice
+/// dropLast(:)"移除"原数组后面指定个数的元素得到一个ArraySlice
+/// drop(:)“移除”原数组符合指定条件的元素得到一个ArraySlice
+
+let array7 = [5, 2, 10, 1, 0, 100, 46, 99]
+array7.dropFirst()
+array7.dropFirst(3)
+array7.dropLast()
+array7.dropLast(3)
+print(array7.drop { $0 < 15 })
+
+// 通过prefix 得到ArraySlice
+/// prefix()获取数组前面指定个数的元素组成的ArraySlice
+/// prefix(upTo:)获取数组到指定位置（不包含指定位置）前面的元素组成的ArraySlice
+/// prefix(through:)获取数组到指定位置（包含指定位置）前面的元素组成的ArraySlice
+/// prefix(while:)获取数组前面符合条件的元素（到第一个不符合条件的元素截止）组成的ArraySlice
+
+let array8 = [5, 2, 10, 1, 0, 100, 46, 99]
+array8.prefix(4)
+array8.prefix(upTo: 4)
+array8.prefix(through: 4)
+print(array8.prefix { $0 < 10 })
+
+// 通过suffix得到数组切片
+/// suffix()获取数组后面指定个数的元素组成的ArraySlice
+/// suffix(from:)获取数组从指定位置到结尾（包含指定位置）的元素组成的ArraySlice
+
+let array9 = [5, 2, 10, 1, 0, 100, 46, 99]
+array9.suffix(3)
+array9.suffix(from: 5)
+
+
+// 通过Range得到ArraySlice
+/// 可以通过对数组下标指定Range获取ArraySlice，可以使用闭区间、半开半闭区间、单侧区间、甚至可以只使用...来获取整个数组组成的ArraySlice
+
+let array10 = [5, 2, 10, 1, 0, 100, 46, 99]
+array10[3...5]
+array10[3..<5]
+array10[...2]
+array10[..<2]
+array10[6...]
+array10[...]
+
+// ArraySlice转为Array
+/// ArraySlice无法直接赋值给一个Array的常量或者变量，需要使用Array(slice)
+
+var array11 = [5, 2, 10, 1, 0, 100, 46, 99]
+let slice = array11[3...5]
+array11 = Array(slice)
+
+// ArraySlice和原Array相互独立
+
+var array12 = [10, 46, 99]
+var slice1 = array12.dropLast()
+array12.append(333)
+print(slice1)
+slice1.append(555)
+print(array12)
+
+
+// 数组元素的随机化
+/// shuffle()在原数组基础上将数组元素打乱，只能坐拥在数组变量上
+/// shuffled()返回原数组的随机化数组，可以作用在数组变量和常量上
+
+var array13 = [Int](1...8)
+array13.shuffle()
+print(array13)
+
+let array14 = [Int](1...8)
+var array15 = array14.shuffled()
+print(array15)
+
+
+// 数组的逆序
+/// reverse()在原数组上将数组逆序，只能作用在数组变量上
+/// reveresd()返回数组的逆序“集合表示”，可以作用在数组变量和常量上，该方法不会分配新内存空间
+var array16 = [Int](1...8)
+array16.reverse()
+print(array16)
+
+let array17 = [Int](1...8)
+var array18 = array17.reversed()
+print(array18)
+
+
+// 数组的分组
+/// partition(by belongsInSecondPartition:(Element) throws -> Bool) 将数组以某个条件分组，数组前半部分都是不符合条件的元素，数组后半部分都是符合条件的元素
+
+var array19 = [10, 20, 45, 30, 98, 101, 30, 4]
+let index = array19.partition{(element) -> Bool in element > 30 }
+print(array19)
+let partition1 = array19[..<index]
+let partition2 = array19[index...]
+print(partition1)
+print(partition2)
+
+/// shuffle和partition是不稳定的分组，即原本的先后顺序会被随机的改变
+
+
+// 数组的排序
+/// sort()在原数组上将元素排序，只能作用于数组变量
+/// sorted返回原数组的排序结果数组，可以作用在数组变量和常量上
+
+var array20 = [10, 20, 45, 30, 98, 101, 30, 4]
+array20.sort()
+print(array20)
+
+let array21 = [10, 20, 45, 30, 98, 101, 30, 4]
+let array22 = array21.sorted()
+print(array22)
+
+// 交换数组的两个元素
+/// swap(_:_:)交换指定位置的两个元素
+
+var array23 = [10, 20, 45, 30, 98, 101, 30, 4]
+array23.swapAt(array23.startIndex, array.endIndex - 1)
+print(array23)
+
+
+
+// 字符串数组拼接
+/// joined()拼接字符串数组里的所有元素为一个字符串
+/// joined(separator:)以给定的分隔符拼接字符串数组里的所有元素为一个字符串
+
+var array24 = ["hello", "world"]
+print(array24.joined())
+print(array24.joined(separator: ","))
+
+
+// 元素为Sequence数组的拼接
+/// joined()拼接数组里的所有元素为一个更大的Sequence
+/// joined(separator:)以给定的分隔符拼接数组里的所有元素为一个更大的Sequence
+
+let ranges = [0..<3, 8..<10, 15..<17]
+for range in ranges {
+    print(range)
+}
+for i in ranges.joined() {
+    print(i)
+}
+
+
+let nestedNumbers = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+let joined = nestedNumbers.joined(separator: [-1, -2])
+print(Array(joined))
