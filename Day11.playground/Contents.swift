@@ -352,3 +352,67 @@ for i in ranges.joined() {
 let nestedNumbers = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 let joined = nestedNumbers.joined(separator: [-1, -2])
 print(Array(joined))
+
+// 数组实现栈和队列
+struct Stack<T> {
+    private var elements = [T]()
+    
+    var count: Int {
+        return elements.count
+    }
+    
+    var isEmpty: Bool {
+        return elements.isEmpty
+    }
+    
+    var peek: T? {
+        return elements.last
+    }
+    
+    mutating func push(_ element: T) { // 下划线标识参数标签，即stack.push(10)   stack.push(element: 10) 不加
+        elements.append(element)
+    }
+    
+    mutating func pop() -> T? {
+        return elements.popLast() //返回一个可选值
+    }
+}
+
+var stack = Stack<Int>()
+stack.push(1)
+stack.push(3)
+stack.push(8)
+print(stack.pop() ?? 0)
+print(stack.count)
+
+
+struct Queue<T> {
+    private var elements: [T] = []
+    
+    var count: Int {
+        return elements.count
+    }
+    
+    var isEmpty: Bool {
+        return elements.isEmpty
+    }
+    
+    var peek: T? {
+        return elements.first
+    }
+    
+    mutating func enqueue(_ element: T) {
+        elements.append(element)
+    }
+    
+    mutating func dequeue() -> T? {
+        return isEmpty ? nil : elements.removeFirst()
+    }
+}
+
+var queue = Queue<Int>()
+queue.enqueue(1)
+queue.enqueue(3)
+queue.enqueue(8)
+print(queue.dequeue() ?? 0)
+print(queue.count)
