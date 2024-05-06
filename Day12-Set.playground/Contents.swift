@@ -16,33 +16,33 @@ var greeting = "Hello, playground"
 /// 使用初始化器语法来创建一个确定类型的空Set
 /// 使用数组字面量创建Set
 
-var letters = Set<Character>()
-letters.insert("c")
-print(letters)
-
-var course: Set<String> = ["Math", "English", "History"]
-course.insert("History")
-print(course)
+//var letters = Set<Character>()
+//letters.insert("c")
+//print(letters)
+//
+//var course: Set<String> = ["Math", "English", "History"]
+//course.insert("History")
+//print(course)
 
 // Set类型的哈希值
 /// 为了能让类型存储在Set中，它必须是可哈希的--就是说类型必须提供它计算自身哈希值的方法
 /// 所有的Swift的基础类型（比如String,Int,Double和Bool）默认都是可哈希的，并且可以用于Set或者Dictionary的键
 
 /// 自定义类型需要实现Hashable协议
-struct Person {
-    var name: String
-    var age: Int
-}
-
-extension Person: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
-        hasher.combine(age)
-    }
-}
-
-var personSet = Set<Person>()
-personSet.insert(Person(name: "zhangsan", age: 28))
+//struct Person {
+//    var name: String
+//    var age: Int
+//}
+//
+//extension Person: Hashable {
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(name)
+//        hasher.combine(age)
+//    }
+//}
+//
+//var personSet = Set<Person>()
+//personSet.insert(Person(name: "zhangsan", age: 28))
 
 
 // 访问和修改Set
@@ -89,7 +89,7 @@ extension Person: Equatable {
     }
 }
 
-// hashable和equatable都符合时，才会进行更新
+// 两个元素hashable和equatable都符合时，才会进行更新
 
 var personSet: Set<Person> = [Person(name: "zhangsan", age: 20), Person(name: "lisi", age: 29)]
 personSet.update(with: Person(name: "zhangsan", age: 35))
@@ -99,3 +99,31 @@ print(person)
 let person1 = personSet.remove(Person(name: "zhangsan", age: 33))
 print(personSet)
 print(personSet.filter({ $0.age > 20 }))
+
+
+// 基本Set操作
+/// intersection(_:)交集，由属于A且属于B的相同元素组成的集合
+/// union(_:)并集，由所有属于集合A或属于集合B的元素所组成的集合
+/// symmetricDifference(_:)对称差集，集合A与集合B的对称差集定义为集合A与集合B中所有不属于A交B的元素的集合
+/// subtracting(_:)相对补集，由属于A而不属于B的元素组成的集合，称为B关于A的相对补集
+
+let set1: Set = ["A", "B", "C"]
+let set2: Set = ["B", "E", "F", "G"]
+print(set1.intersection(set2))
+print(set1.union(set2))
+print(set1.symmetricDifference(set2))
+print(set1.subtracting(set2))
+
+// Set判断方法
+/// isSubset(of:)判断是否是林一个Set或者Sequence的子集
+/// isSuperset(of:)判断是否是另一个Set或者Sequence的子集
+/// isStrictSubset(of:)和isStrictSuperset(of:)判断是否是另一个Set的子集或者超集，但是又不等于另一个Set
+/// isDisjoint(with:)判断两个Set是否有公共元素，如果没有返回true，如果有返回false
+
+let smallSet: Set = [1, 2, 3]
+let bigSet: Set = [1, 2, 3, 4]
+print(smallSet.isSubset(of: bigSet))
+print(bigSet.isSuperset(of: smallSet))
+print(smallSet.isStrictSubset(of: bigSet))
+print(bigSet.isStrictSuperset(of: smallSet))
+print(smallSet.isDisjoint(with: bigSet))
