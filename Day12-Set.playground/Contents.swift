@@ -127,3 +127,21 @@ print(bigSet.isSuperset(of: smallSet))
 print(smallSet.isStrictSubset(of: bigSet))
 print(bigSet.isStrictSuperset(of: smallSet))
 print(smallSet.isDisjoint(with: bigSet))
+
+// 给定一个集合，返回这个集合的所有子集
+
+func getSubsetsOfSet<T>(set: Set<T>) -> Array<Set<T>> {
+    let count = 1 << set.count
+    let elements = Array(set)
+    var subSets = Array<Set<T>>()
+    for i in 0..<count {
+        var subSet = Set<T>()
+        for j in 0...elements.count {
+            if ((i >> j) & 1) == 1 {
+                subSet.insert(elements[j])
+            }
+        }
+        subSets.append(subSet)
+    }
+    return subSets
+}
