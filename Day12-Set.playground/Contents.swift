@@ -94,6 +94,7 @@ extension Person: Equatable {
 var personSet: Set<Person> = [Person(name: "zhangsan", age: 20), Person(name: "lisi", age: 29)]
 personSet.update(with: Person(name: "zhangsan", age: 35))
 personSet.update(with: Person(name: "wangwu", age: 18))
+print(personSet)
 let person = personSet.removeFirst()
 print(person)
 let person1 = personSet.remove(Person(name: "zhangsan", age: 33))
@@ -145,3 +146,5 @@ func getSubsetsOfSet<T>(set: Set<T>) -> Array<Set<T>> {
     }
     return subSets
 }
+
+print(getSubsetsOfSet(set: smallSet))
