@@ -131,6 +131,7 @@ print(smallSet.isDisjoint(with: bigSet))
 
 // 给定一个集合，返回这个集合的所有子集
 
+// 方法一 位运算
 func getSubsetsOfSet<T>(set: Set<T>) -> Array<Set<T>> {
     let count = 1 << set.count
     let elements = Array(set)
@@ -148,3 +149,30 @@ func getSubsetsOfSet<T>(set: Set<T>) -> Array<Set<T>> {
 }
 
 print(getSubsetsOfSet(set: smallSet))
+
+
+// 方法二 递归
+func getSubsetsOfSet2<T>(set: Set<T>) -> Array<Set<T>> {
+    let elements = Array(set)
+    return getSubsetsOfSets3(elements: elements, index: elements.count, count: elements.count)
+}
+
+func getSubsetsOfSets3<T>(elements: Array<T>, index: Int, count: Int) -> Array<Set<T>> {
+    var subSets = Array<Set<T>>()
+    if index == 0 { //处理第一个元素
+        subSets.append(Set<T>())
+        var subSet = Set<T>()
+        subSet.insert(elements[0])
+        subSets.append(subSet)
+        return subSets
+    }
+    subSets = getSubsetsOfSets3(elements: elements, index: index - 1, count: count)
+    for subSet in subSets {
+        var subSetWithCurrent = subSet
+        subSetWithCurrent.insert(elements[index])
+        subSets.append(subSetWithCurrent)
+    }
+    return subSets
+}
+
+// Set哈希冲突解决使用的是开放寻址法
