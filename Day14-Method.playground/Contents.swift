@@ -139,3 +139,30 @@ var anotherInt = 107
 swapTwoInts(&someInt, &anotherInt)
 print("someInt is now \(someInt), and anotherInt is now \(anotherInt)")
 
+func addTwoNumber(_ num1: Int, _ num2: Int = 10) -> Int {
+    return num1 + num2
+}
+
+func addNumbers(nums: Int...) -> Int {
+    var sum = 0
+    for num in nums {
+        sum += num
+    }
+    return sum
+}
+
+print(addNumbers(nums: 1, 2, 3, 4, 5))
+
+var n1 = 10
+var n2 = 20
+
+func swapTwoNumber(n1: inout Int, n2:  inout Int) {
+    var temp = n1
+    n1 = n2
+    n2 = temp
+}
+
+swapTwoNumber(n1: &n1, n2: &n2)
+
+print(n1)
+print(n2)
