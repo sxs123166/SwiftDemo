@@ -166,3 +166,84 @@ swapTwoNumber(n1: &n1, n2: &n2)
 
 print(n1)
 print(n2)
+
+
+// 函数类型
+/// 每一个函数都有一个特定的函数类型，他由形式参数类型，返回类型组成
+
+func addTwoInts(_ a: Int, _ b: Int) -> Int {
+    return a+b
+}
+
+func multiplyTwoInts(_ a: Int, _ b: Int) -> Int {
+    return a * b
+}
+
+//(Int, Int) -> Int
+
+
+// 你可以像使用Swift中的其他类型一样使用函数类型。例如，你可以给一个常量或者变量定义一个函数类型，并且为变量指定一个相应的函数
+
+func addTwoNumber(first num: Int,second num2: Int) -> Int {
+    return num + num2
+}
+
+var mathFunction: (Int, Int) -> Int = addTwoNumber(_:_:)
+print(mathFunction(2, 3))
+
+
+// 返回值为空时需要加一个空括号
+let swapFunc: (inout Int, inout Int) -> () = swapTwoNumber
+
+// 函数类型作为形式参数类型
+/// 你可以利用使用一个函数的类型例如（Int, Int）-> Int作为其他函数的形式参数类型。这允许你预留函数的部分实现从而让函数的调用者在调用函数的时候提供
+
+func printMathResult(_ mathFunction: (Int, Int) -> Int, _ a: Int, _ b: Int) {
+    print("Result: \(mathFunction(a, b))")
+}
+
+printMathResult(addTwoInts(_:_:), 3, 5)
+
+// 函数作为返回类型
+/// 你可以利用函数的类型作为另一个函数的返回类型。写法是在函数的返回箭头（->）后立即写一个完整的函数类型
+
+//func stepForward(_ input: Int) -> Int {
+//    return input + 1
+//}
+//
+//func stepBackward(_ input: Int) -> Int {
+//    return input - 1
+//}
+//
+//func chooseStepfunction(backwards: Bool) -> (Int) -> Int {
+//    return backwards ? stepBackward(_:) : stepForward(_:)
+//}
+
+
+//var currentValue = 3
+//let moveNearerToZero = chooseStepfunction(backwards: currentValue > 0)
+
+
+//print("Counting to Zero:")
+//while currentValue != 0 {
+//    print("\(currentValue)...")
+//    currentValue = moveNearerToZero(currentValue)
+//}
+//print("zero!")
+
+// 内嵌函数
+/// 可以在函数的内部定义另外一个函数。这就是内嵌函数
+/// 内嵌函数在默认情况下在外部是被隐藏起来的，但却仍然可以通过包裹他们的函数来调用他们。包裹的函数也可以返回它内部的一个内嵌函数来在另外的范围里使用
+
+func chooseStepFunction(backward: Bool) -> (Int) -> Int {
+    func stepForward(input: Int) -> Int { return input + 1 }
+    func stepBackward(input: Int) -> Int { return input - 1 }
+    return backward ? stepBackward(input:) : stepForward(input:)
+}
+var currentValue = -4
+let moveNearerToZero = chooseStepFunction(backward: currentValue > 0)
+while currentValue != 0 {
+    print("\(currentValue)...")
+    currentValue = moveNearerToZero(currentValue)
+}
+print("zero!")
