@@ -79,3 +79,61 @@ let alsoIncrementByTen = incrementByTen
 alsoIncrementByTen()
 
 // 如果你分配了一个闭包给类实例的属性，并且闭包通过引用该实例或者它的成员来捕获实例，你将在闭包和实例间会产生循环引用
+
+
+// 逃逸闭包
+// 当闭包作为一个实际参数传递给一个函数的时候，并且他会在函数返回之后调用，我们就说这个闭包逃逸了。当你声明一个接受闭包作为形式参数的函数时，你可以在形式参数前写@escaping来明确闭包是允许逃逸的
+// 闭包可以逃逸的一种方法是被储存在定义于函数外的变量里。比如说，很多函数接受闭包实际参数来作为启动异步任务的回调。函数在启动任务后返回，但是闭包要直到任务完成--闭包需要逃逸，以便于稍后调用
+
+var completionHandlers: [() -> Void] = []
+func someFunctionWithEscapingClosure(completionHandler: @escaping() -> Void) {
+    completionHandlers.append(completionHandler)
+}
+
+// 让闭包@escaping 意味着你必须在闭包中显式的引用self
+func someFunctionWithNonescapingClosure( closure: () -> Void) {
+    closure()
+}
+
+class SomeClass {
+    var x = 10
+    func doSomething() {
+        someFunctionWithEscapingClosure { self.x = 100 }
+        someFunctionWithNonescapingClosure { x = 200 }
+    }
+    
+}
+
+let instance = SomeClass()
+instance.doSomething()
+print(instance.x)
+
+completionHandlers.first?()
+print(instance.x)
+
+// 自动闭包
+// 自动闭包是一种自动创建的用来把作为实际参数传递给函数的表达式打包的闭包。它不接受任何实际参数，并且当他被调用时，它会返回内部打包的表达式的值
+// 这个语法的好处在于通过写普通表达式代替显式闭包而使你省略包围函数形式参数的括号
+
+public func assert(_ condition: @autoclosure () -> Bool, _ message: @autoclosure () -> String = String(), file: StaticString = #file, line: UInt = #line) {}
+
+let number = 3
+assert(number > 3, "number不大于3")
+
+// 自动闭包允许你延迟处理，因此闭包内部的代码直到你调用它的时候才会运行。对于有副作用或者占用资源的代码来说很有用，因为它可以允许你控制代码何时进行求值
+
+var customersInLine = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
+print(customersInLine.count)
+
+let customerProvider = { customersInLine.remove(at: 0) }
+print(customersInLine.count)
+
+print("Now serving \(customerProvider())!")
+print(customersInLine.count)
+
+// 当你传一个闭包作为实际参数到函数的时候，你会得到与延迟处理相同的行为
+func serve(customer cusomerProvider: () -> String) {
+    print("Now serving \(cusomerProvider())!")
+}
+
+serve(customer: { customersInLine.remove(at: 0) })
