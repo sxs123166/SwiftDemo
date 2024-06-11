@@ -137,3 +137,54 @@ func serve(customer cusomerProvider: () -> String) {
 }
 
 serve(customer: { customersInLine.remove(at: 0) })
+
+// 自动+逃逸
+var customerProviders: [() -> String] = []
+func collectCustomerProviders(_ customerProvider: @autoclosure @escaping () -> String) {
+    customerProviders.append(customerProvider)
+}
+collectCustomerProviders(customersInLine.remove(at: 0))
+collectCustomerProviders(customersInLine.remove(at: 0))
+
+print("Collecected \(customerProviders.count) closures")
+
+for customerProvider in customerProviders {
+    print("Now serving \(customerProvider())")
+}
+
+
+
+var names2 = ["zhangsan", "lisi", "wangwu", "zhaoliu"]
+let customerProvider2 = { names2.remove(at: 0) }
+print(names2.count)
+print(customerProvider2())
+print(names2.count)
+
+var providers2: [() -> String] = []
+//func collectCustomerProviders2(provider: @escaping () -> String) {
+//    providers2.append(provider)
+//}
+//
+//collectCustomerProviders2(provider: { names2.remove(at: 0) })
+
+// 自动闭包不需要加大括号
+func collectCustomerProviders2(provider: @autoclosure @escaping () -> String) {
+    providers2.append(provider)
+}
+
+collectCustomerProviders2(provider: names2.remove(at: 0))
+collectCustomerProviders2(provider: names2.remove(at: 0))
+
+print(names2.count)
+for provider in providers2 {
+    print(provider())
+}
+print(names2.count)
+
+// 逃逸闭包在类里面需要使用self来访问属性
+class someClass {
+    var x: String = "hello"
+    func doSomething() {
+        collectCustomerProviders2(provider: self.x)
+    }
+}
