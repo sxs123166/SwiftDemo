@@ -43,8 +43,10 @@ struct Matrix {
 }
 
 var matrix = Matrix(rows: 2, columns: 2)
+print(matrix.grid)
 matrix[0, 1] = 1.5
 matrix[1, 0] = 3.2
+print(matrix[0, 1])
 
 // 类型下标
 // 实例下标，如果上文描述的那样，你在对应类型的实例上调用下标。你同样也可以定义类型本身的下标。这类下标叫做类型下标。你可通过在subscript关键字前加static关键字来标记类型下标。在类里使用class关键字，这样可以允许子类重写父类的下标实现。
@@ -57,3 +59,17 @@ enum Planet: Int {
 let mars = Planet[4]
 print(mars)
 
+enum CompassPoint: Int {
+    case south = 1
+    case north
+    case east
+    case west
+    static subscript(index: Int) -> CompassPoint {
+        get {
+            return CompassPoint(rawValue: index)!
+        }
+    }
+}
+
+let direction = CompassPoint[2]
+print(direction)
