@@ -52,6 +52,22 @@ extension RandomNumberGenerator {
     }
 }
 
-let genetor =
-print("Here's a random number: \(genetor.random())")
-print("And here's a random Boolean: \(genetor.randomBool())")
+//let genetor = LinearCongruentialGenerator()
+//print("Here's a random number: \(genetor.random())")
+//print("And here's a random Boolean: \(genetor.randomBool())")
+
+// 提供默认实现
+// 你可以使用协议扩展来给协议的任意方法或者计算属性要求提供默认实现。如果遵循类型给这个协议的要求
+// 提供了它自己的实现，那么它就会替代扩展中提供的默认实现
+
+// 给协议扩展增加限制
+// 当你定义一个协议扩展，你可以明确遵循类型必须在扩展的方法和属性可用之前满足的限制。在扩展协议名字后面使用where分句来写这些限制
+
+extension Collection where Iterator.Element: TextRepresentable {
+    var textualDescription: String {
+        let itemsAsText = self.map{ $0.textualDescription }
+        return "[" + itemsAsText.joined(separator: ",") + "]"
+    }
+}
+
+
