@@ -71,3 +71,25 @@ extension Collection where Iterator.Element: TextRepresentable {
 }
 
 
+//protocol TextRepresentable {
+//    var desc: String { get }
+//}
+//
+//extension Person : TextRepresentable {
+//    var desc: String {
+//        return "name \(name) age \(age)"
+//    }
+//}
+//
+//extension Array: TextRepresentable where Element: TextRepresentable {
+//    var desc: String {
+//        let itemDesc = self.map{$0.desc}
+//        return itemDesc.joined(separator: ",")
+//    }
+//}
+//
+//let array = [Person(name: "zhangsan", age: 20), Person(name: "lisi", age: 30)]
+//print(array.desc)
+
+//let intArray = [1, 2, 3]
+//print(intArray.d)
