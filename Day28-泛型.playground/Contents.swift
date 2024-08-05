@@ -24,3 +24,4 @@ func swapTwoValues<T>(_ a: inout T, _ b: inout T) {
 
 // 大多数情况下，类型形式参数的名字要有描述性，比如Dictionary<Key, Value>中的Key和Value，借此告知读者类型形式参数和泛型类型、泛型用到的函数之间的关系。但是，他们之间的关系没有意义时，一般按照惯例用单个字母命名，比如T,U,V，比如上面的swapTwoValues(_:_:)函数中的T
 // 类型形式参数永远用大写开头的驼峰命名法（比如T和MyTypeParameter）命名，以指明他们是一个类型的占位符，不是一个值
+
